@@ -1,3 +1,7 @@
 # ts-collisions
 
-[Edit in StackBlitz next generation editor ⚡️](https://stackblitz.com/~/github.com/the-doctor-octo/ts-collisions)
+Polygons collision detection case study
+
+### serve locally
+
+npm install && npm run dev
