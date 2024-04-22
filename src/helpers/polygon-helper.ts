@@ -1,3 +1,4 @@
+import { getVectorPerpendicular } from "helpers/math";
 import { Polygon } from "../models/polygon";
 import { Vec2d } from "../models/vec";
 
@@ -90,6 +91,39 @@ export function createPolygon(
     points: generatePolygonPoints(numSides, edgeLength),
     position: { x: 0, y: 0 },
   } as Polygon;
+}
+
+export function calculateEdgesPerpendiculars(points: Vec2d<number>[]): Vec2d<number>[] {
+  const perpendiculars: Vec2d<number>[] = [];
+
+  const numPoints = points.length;
+
+  for (let i = 0; i < numPoints; i++) {
+    const p1 = points[i];
+    const p2 = points[(i + 1) % numPoints]; // Next point (wraps around to the first point)
+
+    // Calculate edge vector
+    const edge: Vec2d<number> = {
+      x: p2.x - p1.x,
+      y: p2.y - p1.y
+    };
+
+    // Calculate perpendicular axis by swapping x and y and negating one
+    const perpendicularAxis = getVectorPerpendicular(edge);
+    if (perpendicularAxis === null) {
+      console.warn(`%c *** Cannot calculate perpendicular for edge`, `background:#222; color: #FFda55`, edge)
+      continue;
+    }
+
+    // Normalize the perpendicular axis
+    const length = Math.sqrt(perpendicularAxis.x * perpendicularAxis.x + perpendicularAxis.y * perpendicularAxis.y);
+    perpendicularAxis.x /= length;
+    perpendicularAxis.y /= length;
+
+    perpendiculars.push(perpendicularAxis);
+  }
+
+  return perpendiculars;
 }
 
 function generatePolygonPoints(
