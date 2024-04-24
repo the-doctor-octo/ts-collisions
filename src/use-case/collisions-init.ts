@@ -11,10 +11,10 @@ export const colors: string[] = [
     "#bae1ff",
 ];
 
-export function initPolygons(edgeLength: number, canvasHeight: number) {
+export function initPolygons(numberOfPolygons: number, edgeLength: number, canvasHeight: number, options?: Partial<Polygon>) {
     const polygons: Polygon[] = [];
-    for (let i = 0; i < 10; i++) {
-        const polygon = createPolygon(i + 3, edgeLength, getPolygonColor(i));
+    for (let i = 0; i < numberOfPolygons; i++) {
+        const polygon = createPolygon(i + 3, edgeLength, getPolygonColor(i), options);
         if (!polygon) continue;
         polygon.position = { x: 15 + i * 40, y: canvasHeight / 2 };
         polygons.push(polygon);

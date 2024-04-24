@@ -1,3 +1,4 @@
+import { MinMax } from "@octo-ts/models";
 import { Vec2d } from "../models/vec";
 
 export function getVectorPerpendicular(axis: Vec2d<number>): Vec2d<number> | null {
@@ -9,13 +10,37 @@ export function getVectorPerpendicular(axis: Vec2d<number>): Vec2d<number> | nul
     return { x: -axis.y, y: axis.x }
 }
 
-export function getVectorNormal(vector: Vec2d<number>): Vec2d<number> | null {
-    if (!vector) {
-        console.warn(`%c *** axis is null`, `background:#222; color: #bada55`);
-        return null;
+// Function to project a polygon onto a perpendicular axis
+export function projectPolygonToAxis(vertices: Vec2d<number>[], axis: Vec2d<number>): MinMax {
+    let min = Number.POSITIVE_INFINITY;
+    let max = Number.NEGATIVE_INFINITY;
+
+    // Loop through each vertex of the polygon
+    for (const vertice of vertices) {
+
+        // Project the vertex onto the axis using the dot product
+        const projection = vertice.x * axis.x + vertice.y * axis.y;
+
+        // Update the minimum and maximum projection values
+        if (projection < min) {
+            min = projection;
+        }
+        if (projection > max) {
+            max = projection;
+        }
     }
 
-    const length = Math.sqrt(vector.x * vector.x + vector.y * vector.y)
+    // Return the min and max projections
+    return { min, max };
+}
 
-    return { x: vector.x /= length, y: vector.y /= length }
+
+// Function to check for overlap between two projected intervals
+export function intervalsOverlap(interval1: MinMax, interval2: MinMax): boolean {
+    // If one interval is entirely to the left or right of the other, there is no overlap
+    if (interval1.max < interval2.min || interval2.max < interval1.min) {
+        return false;
+    }
+    // Otherwise, there is overlap
+    return true;
 }
