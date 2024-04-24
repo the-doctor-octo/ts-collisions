@@ -8,7 +8,9 @@ The scope is to study the SAT (separating axis theorem) and its implications.
 I hope you can find this entertaining and useful to gain some knowledge.
 
 How to use:
+
 Q - cycles the selection of the polygon to move
+
 W-A-S-D - moves the polygon
 
 ### serve locally
