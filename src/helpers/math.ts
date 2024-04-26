@@ -44,3 +44,13 @@ export function intervalsOverlap(interval1: MinMax, interval2: MinMax): boolean 
     // Otherwise, there is overlap
     return true;
 }
+
+/**
+ * Returns a 'number' with decimals up to the precision
+ * @param num 
+ * @param precision 
+ * @returns 
+ */
+export function toPrecisionNumber(num: number, precision: number): number {
+    return parseFloat(num.toPrecision(precision));
+}

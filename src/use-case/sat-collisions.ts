@@ -4,7 +4,7 @@
  * and collisions between polygons is determined using the SAT(Separated Axis Theorem)
  */
 
-import { calculateEdgesPerpendiculars, drawPolygon, intervalsOverlap, projectPolygonToAxis } from "@octo/helpers";
+import { calculateEdgesPerpendiculars, checkSATCollision, drawPolygon } from "@octo/helpers";
 import { Game, Polygon, Vec2 } from "@octo/models";
 import { initPolygons } from "./sat-collisions-init";
 import { registerKeyboardEvents } from "./sat-collisions-inputs";
@@ -55,27 +55,15 @@ class SATCollisions extends Game {
 
             for (let j = i + 1; j < polygons.length; j++) {
                 const polygonB = polygons[j];
+                const isCollisionDetected = checkSATCollision(polygonA, polygonB);
 
-                for (let z = 0; z < polygonA.normals.length; z++) {
-                    // Transform polygons points to space coordinates
-                    const polAVertices = polygonA.points.map((point) => ({ x: point.x + polygonA.position.x, y: point.y + polygonA.position.y }))
-                    const polBVertices = polygonB.points.map((point) => ({ x: point.x + polygonB.position.x, y: point.y + polygonB.position.y }))
-
-                    // 2. Project vertices onto the perpendiculars
-                    const polAProjection = projectPolygonToAxis(polAVertices, polygonA.normals[z]);
-                    const polBProjection = projectPolygonToAxis(polBVertices, polygonA.normals[z]);
-
-                    if (!intervalsOverlap(polAProjection, polBProjection)) {
-                        //  if at least one perpendicular has no overlaps, they are separated
-                        polygonA.colliding = polygonA.colliding ?? false;
-                        polygonB.colliding = polygonB.colliding ?? false;
-                        break;
-                    }
-                    if (z === polygonA.normals.length - 1) {
-                        // All normals have been checked and all projections overlap, hence the two polygons collide
-                        polygonA.colliding = true;
-                        polygonB.colliding = true;
-                    }
+                if (!isCollisionDetected) {
+                    //  if at least one perpendicular has no overlaps, they are separated
+                    polygonA.colliding = polygonA.colliding ?? false;
+                    polygonB.colliding = polygonB.colliding ?? false;
+                } else {
+                    polygonA.colliding = true;
+                    polygonB.colliding = true;
                 }
             }
         }
