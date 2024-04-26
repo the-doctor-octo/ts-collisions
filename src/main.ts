@@ -1,2 +1,3 @@
 import "./style.css";
-import './use-case/collisions';
+import './use-case/sat-collisions';
+

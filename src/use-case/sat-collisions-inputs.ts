@@ -1,6 +1,6 @@
-import { Polygon } from "@octo-ts/models";
+import { Polygon } from "@octo/models";
 
-export function registerKeyboardEvents(polygons: Polygon[], options: { currentPolygonIndex: number }) {
+export function registerKeyboardEvents(polygons: Polygon[], options: { currentPolygonIndex: number }): void {
     window.addEventListener('keypress', (ev) => {
         const currPolygon = polygons[options.currentPolygonIndex];
         switch (ev.key) {

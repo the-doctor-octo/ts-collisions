@@ -1,6 +1,5 @@
-import { createPolygon } from "@octo-ts/helpers";
-import { Polygon } from "@octo-ts/models";
-
+import { createPolygon } from "@octo/helpers";
+import { Polygon } from "@octo/models";
 
 export const highlightColor: string = "#1Aaa0A";
 export const colors: string[] = [
@@ -11,7 +10,7 @@ export const colors: string[] = [
     "#bae1ff",
 ];
 
-export function initPolygons(numberOfPolygons: number, edgeLength: number, canvasHeight: number, options?: Partial<Polygon>) {
+export function initPolygons(numberOfPolygons: number, edgeLength: number, canvasHeight: number, options?: Partial<Polygon>): Polygon[] {
     const polygons: Polygon[] = [];
     for (let i = 0; i < numberOfPolygons; i++) {
         const polygon = createPolygon(i + 3, edgeLength, getPolygonColor(i), options);

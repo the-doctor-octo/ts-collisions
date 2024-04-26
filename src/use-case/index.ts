@@ -1,4 +1,4 @@
-export * from './collisions';
-export * from './collisions-init';
-export * from './collisions-inputs';
+export * from './sat-collisions';
+export * from './sat-collisions-init';
+export * from './sat-collisions-inputs';
 

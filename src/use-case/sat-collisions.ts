@@ -4,10 +4,10 @@
  * and collisions between polygons is determined using the SAT(Separated Axis Theorem)
  */
 
-import { calculateEdgesPerpendiculars, drawPolygon, intervalsOverlap, projectPolygonToAxis } from "@octo-ts/helpers";
-import { Game, Polygon, Vec2d } from "@octo-ts/models";
-import { initPolygons } from "./collisions-init";
-import { registerKeyboardEvents } from "./collisions-inputs";
+import { calculateEdgesPerpendiculars, drawPolygon, intervalsOverlap, projectPolygonToAxis } from "@octo/helpers";
+import { Game, Polygon, Vec2 } from "@octo/models";
+import { initPolygons } from "./sat-collisions-init";
+import { registerKeyboardEvents } from "./sat-collisions-inputs";
 
 const canvasBgColor = "#afd7db"
 const canvas = document.querySelector("canvas");
@@ -15,7 +15,7 @@ const canvas = document.querySelector("canvas");
 let polygons: Polygon[] = [];
 const options = { currentPolygonIndex: 0 }
 
-class Collisions extends Game {
+class SATCollisions extends Game {
     init(): void {
         super.init();
         polygons = initPolygons(10, 14, this.canvasHeight, { maxSpeed: { x: 5, y: 5 } });
@@ -42,12 +42,12 @@ class Collisions extends Game {
             }
             polygonA.selected = i === options.currentPolygonIndex;
 
-            // Check collision detection for each of polygons
+            // Check collision detection for each polygon
 
             //  1. Find the polygons edges and find the perpendicular axes (called normals)
             if (polygonA.normals === undefined || polygonA.normals.length === 0) {
                 polygonA.normals = calculateEdgesPerpendiculars(polygonA.points)
-                    .reduce((accumulation: Vec2d<number>[], current: Vec2d<number>) => {
+                    .reduce((accumulation: Vec2<number>[], current: Vec2<number>) => {
                         // Remove duplicated normals (a polygon can have two edges oriented in same direction, hence same normals)
                         return accumulation.some((n) => Math.abs(n.y) === Math.abs(current.y) && Math.abs(n.x) === Math.abs(current.x)) ? accumulation : accumulation.concat(current)
                     }, []);
@@ -72,6 +72,7 @@ class Collisions extends Game {
                         break;
                     }
                     if (z === polygonA.normals.length - 1) {
+                        // All normals have been checked and all projections overlap, hence the two polygons collide
                         polygonA.colliding = true;
                         polygonB.colliding = true;
                     }
@@ -93,5 +94,5 @@ class Collisions extends Game {
     }
 }
 
-const game_collisions = new Collisions(canvas, 400, 400, 30);
+const game_collisions = new SATCollisions(canvas, 400, 400, 30);
 game_collisions.start(); 

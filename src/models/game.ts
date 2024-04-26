@@ -72,7 +72,7 @@ export abstract class Game {
         requestAnimationFrame(this.gameLoop.bind(this));
     }
 
-    start() {
+    start(): void {
         // Start the game loop
         this.lastUpdateTime = performance.now();
         if (this.ctx === null) {

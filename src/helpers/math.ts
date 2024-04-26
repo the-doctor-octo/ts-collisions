@@ -1,7 +1,7 @@
-import { MinMax } from "@octo-ts/models";
-import { Vec2d } from "../models/vec";
+import { MinMax } from "@octo/models";
+import { Vec2 } from "../models/vec";
 
-export function getVectorPerpendicular(axis: Vec2d<number>): Vec2d<number> | null {
+export function getVectorPerpendicular(axis: Vec2<number>): Vec2<number> | null {
     if (!axis) {
         console.warn(`%c *** axis is null`, `background:#222; color: #bada55`);
         return null;
@@ -11,7 +11,7 @@ export function getVectorPerpendicular(axis: Vec2d<number>): Vec2d<number> | nul
 }
 
 // Function to project a polygon onto a perpendicular axis
-export function projectPolygonToAxis(vertices: Vec2d<number>[], axis: Vec2d<number>): MinMax {
+export function projectPolygonToAxis(vertices: Vec2<number>[], axis: Vec2<number>): MinMax {
     let min = Number.POSITIVE_INFINITY;
     let max = Number.NEGATIVE_INFINITY;
 

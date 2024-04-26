@@ -1,4 +1,4 @@
-export type Vec2d<T> = {
+export type Vec2<T> = {
   x: T;
   y: T;
 };

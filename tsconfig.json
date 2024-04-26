@@ -20,8 +20,8 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "./src",
     "paths": {
-      "@octo-ts/models": ["models"],
-      "@octo-ts/helpers": ["helpers"]
+      "@octo/models": ["models"],
+      "@octo/helpers": ["helpers"]
     }
   },
   "include": ["src"]

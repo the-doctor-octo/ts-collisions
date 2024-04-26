@@ -1,6 +1,6 @@
 import { getVectorPerpendicular } from "helpers/math";
 import { Polygon } from "../models/polygon";
-import { Vec2d } from "../models/vec";
+import { Vec2 } from "../models/vec";
 
 export interface RenderingPolygonParams {
   strokeColor: string;
@@ -14,7 +14,7 @@ const DEFAULT_POLYGON_PARAMS: RenderingPolygonParams = {
   collisionStrokeColor: "#00a4FF"
 }
 
-export function drawPolygon(polygon: Polygon, ctx: CanvasRenderingContext2D, options: RenderingPolygonParams = DEFAULT_POLYGON_PARAMS) {
+export function drawPolygon(polygon: Polygon, ctx: CanvasRenderingContext2D, options: RenderingPolygonParams = DEFAULT_POLYGON_PARAMS): void {
   if (!polygon) {
     console.error("Polygon is null");
     return;
@@ -25,7 +25,7 @@ export function drawPolygon(polygon: Polygon, ctx: CanvasRenderingContext2D, opt
   }
 
   // Move to the first point, calculated as the origin summed to the first point ocordinates
-  const origin: Vec2d<number> = {
+  const origin: Vec2<number> = {
     x: polygon.position.x + polygon.points[0].x,
     y: polygon.position.y + +polygon.points[0].y,
   };
@@ -61,7 +61,11 @@ export function drawPolygon(polygon: Polygon, ctx: CanvasRenderingContext2D, opt
   }
 }
 
-export function createTriangle(height: number, color: string = "#ffb3ba") {
+export function createTriangle(height: number, color: string = "#ffb3ba"): Polygon | null {
+  if (height === 0) {
+    console.warn('height cannot be 0');
+    return null;
+  }
   return {
     color,
     fill: true,
@@ -77,7 +81,11 @@ export function createTriangle(height: number, color: string = "#ffb3ba") {
   } as Polygon;
 }
 
-export function createSquare(sideLength: number, color: string = "#ffb3ba") {
+export function createSquare(sideLength: number, color: string = "#ffb3ba"): Polygon | null {
+  if (sideLength === 0) {
+    console.warn('sideLength cannot be 0');
+    return null;
+  }
   return {
     color,
     fill: true,
@@ -115,8 +123,8 @@ export function createPolygon(
   } as Polygon;
 }
 
-export function calculateEdgesPerpendiculars(points: Vec2d<number>[]): Vec2d<number>[] {
-  const perpendiculars: Vec2d<number>[] = [];
+export function calculateEdgesPerpendiculars(points: Vec2<number>[]): Vec2<number>[] {
+  const perpendiculars: Vec2<number>[] = [];
 
   const numPoints = points.length;
 
@@ -125,7 +133,7 @@ export function calculateEdgesPerpendiculars(points: Vec2d<number>[]): Vec2d<num
     const p2 = points[(i + 1) % numPoints]; // Next point (wraps around to the first point)
 
     // Calculate edge vector
-    const edge: Vec2d<number> = {
+    const edge: Vec2<number> = {
       x: p2.x - p1.x,
       y: p2.y - p1.y
     };
@@ -151,8 +159,8 @@ export function calculateEdgesPerpendiculars(points: Vec2d<number>[]): Vec2d<num
 function generatePolygonPoints(
   numSides: number,
   sideLength: number
-): Vec2d<number>[] {
-  const points: Vec2d<number>[] = [];
+): Vec2<number>[] {
+  const points: Vec2<number>[] = [];
   const angleIncrement = (2 * Math.PI) / numSides;
 
   for (let i = 0; i < numSides; i++) {
