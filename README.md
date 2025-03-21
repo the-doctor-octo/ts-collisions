@@ -1,4 +1,4 @@
-# octo-ts-collisions
+# ts-collisions
 
 Polygons collision detection case study
 
